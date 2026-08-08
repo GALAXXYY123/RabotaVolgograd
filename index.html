@@ -44,12 +44,21 @@
             border-radius: 32px; padding: 45px 35px 35px;
             max-width: 440px; width: 100%; text-align: center;
             box-shadow: 0 0 80px rgba(180,255,50,0.04), 0 30px 80px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.03);
+            animation: panelIn 0.9s cubic-bezier(0.16,1,0.3,1) forwards;
+            opacity: 0; transform: translateY(20px);
+            transition: box-shadow 0.6s, border-color 0.6s;
         }
+        .glass-panel.focused {
+            border-color: rgba(180,255,50,0.2);
+            box-shadow: 0 0 100px rgba(180,255,50,0.08), 0 0 200px rgba(180,255,50,0.03), 0 30px 80px rgba(0,0,0,0.7);
+        }
+        @keyframes panelIn { to { opacity: 1; transform: translateY(0); } }
         h1 {
             color: #f0f0f0;
             font-family: 'Hack', 'Courier New', monospace;
             font-size: 24px; font-weight: 700; font-style: italic;
             letter-spacing: 1.5px; margin-bottom: 6px;
+            animation: fadeIn 0.6s 0.2s both;
         }
         h1 .accent { color: #c8ff64; }
         .subtitle {
@@ -57,9 +66,21 @@
             font-family: 'Inter', sans-serif;
             font-size: 10.5px; font-weight: 500; font-style: italic;
             letter-spacing: 3px; text-transform: uppercase; margin-bottom: 35px;
+            animation: fadeIn 0.6s 0.35s both;
         }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
         form { text-align: left; }
-        .field-group { position: relative; margin-bottom: 14px; }
+        .field-group {
+            position: relative; margin-bottom: 14px;
+            animation: fadeIn 0.5s both;
+        }
+        .field-group:nth-child(1) { animation-delay: 0.4s; }
+        .field-group:nth-child(2) { animation-delay: 0.48s; }
+        .field-group:nth-child(3) { animation-delay: 0.56s; }
+        .field-group:nth-child(4) { animation-delay: 0.64s; }
+        .field-group:nth-child(5) { animation-delay: 0.72s; }
+        .field-group:nth-child(6) { animation-delay: 0.8s; }
+        .field-group:nth-child(7) { animation-delay: 0.88s; }
         .field-icon {
             position: absolute; left: 15px; top: 50%;
             transform: translateY(-50%); width: 16px; height: 16px;
@@ -102,16 +123,40 @@
             font-weight: 600; font-style: italic; letter-spacing: 3px;
             text-transform: uppercase; cursor: pointer;
             backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            transition: all 0.4s;
+            transition: all 0.4s; animation: fadeIn 0.5s 0.95s both;
+            position: relative; overflow: hidden;
+        }
+        .btn-submit::before {
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(200,255,100,0.06), transparent);
+            transition: left 0.7s;
         }
         .btn-submit:hover {
             background: rgba(200,255,100,0.06);
             border-color: rgba(200,255,100,0.5);
             transform: translateY(-2px);
             box-shadow: 0 8px 30px rgba(200,255,100,0.08);
+            letter-spacing: 4px; color: #d9ff80;
         }
-        .btn-submit:disabled { opacity: 0.3; cursor: not-allowed; }
-        .success-msg { display: none; color: #fff; text-align: center; padding: 30px 0 10px; }
+        .btn-submit:hover::before { left: 100%; }
+        .btn-submit:active { transform: scale(0.98); }
+        .btn-submit:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+        .success-msg {
+            display: none; color: #fff; text-align: center;
+            padding: 30px 0 10px;
+            animation: successIn 0.7s both;
+        }
+        @keyframes successIn {
+            from { opacity: 0; transform: scale(0.85); filter: blur(12px); }
+            to { opacity: 1; transform: scale(1); filter: blur(0); }
+        }
+        .form-leaving {
+            animation: formOut 0.5s forwards;
+        }
+        @keyframes formOut {
+            to { opacity: 0; transform: translateY(-20px); filter: blur(8px); }
+        }
         .check-wrapper {
             width: 68px; height: 68px; margin: 0 auto 22px;
             border-radius: 50%; background: rgba(200,255,100,0.04);
@@ -214,7 +259,6 @@
     <p class="privacy-note">🔒 Отправляя анкету, вы соглашаетесь на обработку персональных данных.<br>Ваши данные не передаются третьим лицам.</p>
 
     <script>
-        // Частицы
         const pc = document.getElementById('particles');
         for (let i = 0; i < 30; i++) {
             const p = document.createElement('div');
@@ -228,7 +272,13 @@
             pc.appendChild(p);
         }
 
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxC7e6PiMNTFleQ2AUN46cUn8bxz1Wyw7YsAaRCvPQbAs2dwg2qOXdGtzFAORNhAeYw/exec';
+        const panel = document.getElementById('panel');
+        document.querySelectorAll('.field-group input, .field-group select').forEach(el => {
+            el.addEventListener('focus', () => panel.classList.add('focused'));
+            el.addEventListener('blur', () => panel.classList.remove('focused'));
+        });
+
+        const SCRIPT_URL = 'https://sheetdb.io/api/v1/hqlrucantxhqy';
         const form = document.getElementById('workForm');
         const formBlock = document.getElementById('formBlock');
         const successMsg = document.getElementById('successMsg');
@@ -239,26 +289,31 @@
             btn.disabled = true;
             btn.textContent = 'Отправляется...';
 
-            const formData = new FormData();
-            formData.append('fio', document.getElementById('fio').value.trim());
-            formData.append('phone', document.getElementById('phone').value.trim());
-            formData.append('specialnost', document.getElementById('specialnost').value);
-            formData.append('pol', document.getElementById('pol').value);
-            formData.append('raion', document.getElementById('raion').value);
-            formData.append('gotovnost', document.getElementById('gotovnost').value);
-            formData.append('comment', document.getElementById('comment').value.trim());
+            const data = {
+                fio: document.getElementById('fio').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                specialnost: document.getElementById('specialnost').value,
+                pol: document.getElementById('pol').value,
+                raion: document.getElementById('raion').value,
+                gotovnost: document.getElementById('gotovnost').value,
+                comment: document.getElementById('comment').value.trim()
+            };
 
             try {
                 await fetch(SCRIPT_URL, {
                     method: 'POST',
-                    body: formData
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ data: [data] })
                 });
-                formBlock.style.display = 'none';
-                successMsg.style.display = 'block';
+                formBlock.classList.add('form-leaving');
+                setTimeout(() => {
+                    formBlock.style.display = 'none';
+                    successMsg.style.display = 'block';
+                }, 450);
             } catch(e) {
                 btn.disabled = false;
                 btn.textContent = 'Отправить анкету';
-                alert('Ошибка. Проверьте интернет.');
+                alert('Ошибка. Попробуйте ещё раз.');
             }
         });
     </script>
