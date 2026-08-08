@@ -289,16 +289,15 @@
             btn.disabled = true;
             btn.textContent = 'Отправляется...';
 
-            const data = {
-                fio: document.getElementById('fio').value.trim(),
-                phone: document.getElementById('phone').value.trim(),
-                specialnost: document.getElementById('specialnost').value,
-                pol: document.getElementById('pol').value,
-                raion: document.getElementById('raion').value,
-                gotovnost: document.getElementById('gotovnost').value,
-                comment: document.getElementById('comment').value.trim()
-            };
-
+           const data = {
+    'ФИО': document.getElementById('fio').value.trim(),
+    'Телефон': document.getElementById('phone').value.trim(),
+    'Специальность': document.getElementById('specialnost').value,
+    'Пол': document.getElementById('pol').value,
+    'Район': document.getElementById('raion').value,
+    'Готовность': document.getElementById('gotovnost').value,
+    'Комментарий': document.getElementById('comment').value.trim()
+};
             try {
                 await fetch(SCRIPT_URL, {
                     method: 'POST',
