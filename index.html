@@ -278,42 +278,34 @@
             el.addEventListener('blur', () => panel.classList.remove('focused'));
         });
 
-        const SCRIPT_URL = 'https://sheetdb.io/api/v1/hqlrucantxhqy';
+        const FORM_URL = 'https://docs.google.com/forms/d/e/1xASAssUQUo2edLP2Y8-93SiMtE3T1owg8y7Lsj1xR3E/formResponse';
         const form = document.getElementById('workForm');
         const formBlock = document.getElementById('formBlock');
         const successMsg = document.getElementById('successMsg');
         const btn = document.getElementById('submitBtn');
 
-        form.addEventListener('submit', async function(e) {
+        form.addEventListener('submit', function(e) {
             e.preventDefault();
             btn.disabled = true;
             btn.textContent = 'Отправляется...';
 
-           const data = {
-    'ФИО': document.getElementById('fio').value.trim(),
-    'Телефон': document.getElementById('phone').value.trim(),
-    'Специальность': document.getElementById('specialnost').value,
-    'Пол': document.getElementById('pol').value,
-    'Район': document.getElementById('raion').value,
-    'Готовность': document.getElementById('gotovnost').value,
-    'Комментарий': document.getElementById('comment').value.trim()
-};
-            try {
-                await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ data: [data] })
-                });
-                formBlock.classList.add('form-leaving');
-                setTimeout(() => {
-                    formBlock.style.display = 'none';
-                    successMsg.style.display = 'block';
-                }, 450);
-            } catch(e) {
-                btn.disabled = false;
-                btn.textContent = 'Отправить анкету';
-                alert('Ошибка. Попробуйте ещё раз.');
-            }
+            const params = new URLSearchParams();
+            params.append('entry.1517778381', document.getElementById('fio').value.trim());
+            params.append('entry.418745435', document.getElementById('phone').value.trim());
+            params.append('entry.1618603109', document.getElementById('specialnost').value);
+            params.append('entry.423019040', document.getElementById('pol').value);
+            params.append('entry.2128569817', document.getElementById('raion').value);
+            params.append('entry.1425210009', document.getElementById('gotovnost').value);
+            params.append('entry.1679105791', document.getElementById('comment').value.trim());
+
+            const img = new Image();
+            img.src = FORM_URL + '?' + params.toString();
+
+            formBlock.classList.add('form-leaving');
+            setTimeout(() => {
+                formBlock.style.display = 'none';
+                successMsg.style.display = 'block';
+            }, 450);
         });
     </script>
 </body>
