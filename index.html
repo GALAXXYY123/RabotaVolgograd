@@ -289,23 +289,46 @@
             btn.disabled = true;
             btn.textContent = 'Отправляется...';
 
-            const params = new URLSearchParams();
-            params.append('entry.1517778381', document.getElementById('fio').value.trim());
-            params.append('entry.418745435', document.getElementById('phone').value.trim());
-            params.append('entry.1618603109', document.getElementById('specialnost').value);
-            params.append('entry.423019040', document.getElementById('pol').value);
-            params.append('entry.2128569817', document.getElementById('raion').value);
-            params.append('entry.1425210009', document.getElementById('gotovnost').value);
-            params.append('entry.1679105791', document.getElementById('comment').value.trim());
+            const iframe = document.createElement('iframe');
+            iframe.name = 'hidden_iframe';
+            iframe.style.display = 'none';
+            document.body.appendChild(iframe);
 
-            const img = new Image();
-            img.src = FORM_URL + '?' + params.toString();
+            const iframeDoc = iframe.contentWindow.document;
+            const iframeForm = iframeDoc.createElement('form');
+            iframeForm.method = 'POST';
+            iframeForm.action = FORM_URL;
+            iframeForm.target = '_self';
 
-            formBlock.classList.add('form-leaving');
+            const fields = [
+                { name: 'entry.1517778381', id: 'fio' },
+                { name: 'entry.418745435', id: 'phone' },
+                { name: 'entry.1618603109', id: 'specialnost' },
+                { name: 'entry.423019040', id: 'pol' },
+                { name: 'entry.2128569817', id: 'raion' },
+                { name: 'entry.1425210009', id: 'gotovnost' },
+                { name: 'entry.1679105791', id: 'comment' }
+            ];
+
+            fields.forEach(f => {
+                const input = iframeDoc.createElement('input');
+                input.type = 'hidden';
+                input.name = f.name;
+                input.value = document.getElementById(f.id).value.trim();
+                iframeForm.appendChild(input);
+            });
+
+            iframeDoc.body.appendChild(iframeForm);
+            iframeForm.submit();
+
             setTimeout(() => {
-                formBlock.style.display = 'none';
-                successMsg.style.display = 'block';
-            }, 450);
+                formBlock.classList.add('form-leaving');
+                setTimeout(() => {
+                    formBlock.style.display = 'none';
+                    successMsg.style.display = 'block';
+                    document.body.removeChild(iframe);
+                }, 450);
+            }, 500);
         });
     </script>
 </body>
