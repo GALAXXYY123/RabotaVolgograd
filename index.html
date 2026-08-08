@@ -244,7 +244,7 @@
             color: rgba(180, 180, 180, 0.3);
         }
 
-        /* ===== SHAKE-АНИМАЦИЯ ДЛЯ ПУСТЫХ ПОЛЕЙ ===== */
+        /* ===== SHAKE-АНИМАЦИЯ ===== */
         .field-group.shake {
             animation: shake 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
         }
@@ -341,7 +341,7 @@
             display: none;
         }
 
-        /* ===== ТОЧКИ АНИМАЦИИ В КНОПКЕ ===== */
+        /* ===== ТОЧКИ АНИМАЦИИ ===== */
         .dots::after {
             content: '';
             animation: dots 1.4s infinite;
@@ -390,7 +390,7 @@
             }
         }
 
-        /* ===== ГАЛОЧКА С КРУГОМ ===== */
+        /* ===== ГАЛОЧКА ===== */
         .check-wrapper {
             width: 68px;
             height: 68px;
@@ -456,7 +456,7 @@
             animation: fadeIn 0.4s 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
         }
 
-        /* ===== ФУТЕР-ТЕКСТ ===== */
+        /* ===== ФУТЕР ===== */
         .privacy-note {
             position: relative;
             z-index: 1;
@@ -483,18 +483,16 @@
 </head>
 <body>
 
-    <!-- ЧАСТИЦЫ -->
     <div class="particles" id="particles"></div>
 
-    <!-- ПАНЕЛЬ -->
     <div class="glass-panel" id="panel">
-        <!-- ФОРМА -->
+
         <div id="formBlock">
             <h1>Работа после <span class="accent">ЧП</span></h1>
             <p class="subtitle">Склады &nbsp;·&nbsp; Официально &nbsp;·&nbsp; Своя смена</p>
 
             <form id="workForm">
-                <!-- ФИО -->
+
                 <div class="field-group">
                     <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round">
                         <circle cx="12" cy="8" r="4"/>
@@ -503,7 +501,6 @@
                     <input type="text" id="fio" placeholder="ФИО" required>
                 </div>
 
-                <!-- ТЕЛЕФОН -->
                 <div class="field-group">
                     <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round">
                         <rect x="6" y="2" width="12" height="20" rx="2"/>
@@ -512,7 +509,6 @@
                     <input type="tel" id="phone" placeholder="Телефон" required>
                 </div>
 
-                <!-- СПЕЦИАЛЬНОСТЬ -->
                 <div class="field-group">
                     <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round">
                         <rect x="3" y="3" width="18" height="18" rx="2"/>
@@ -529,7 +525,6 @@
                     </select>
                 </div>
 
-                <!-- ПОЛ -->
                 <div class="field-group">
                     <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round">
                         <circle cx="12" cy="5" r="3"/>
@@ -542,7 +537,6 @@
                     </select>
                 </div>
 
-                <!-- РАЙОН -->
                 <div class="field-group">
                     <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round">
                         <circle cx="12" cy="10" r="3"/>
@@ -563,7 +557,6 @@
                     </select>
                 </div>
 
-                <!-- ГОТОВНОСТЬ -->
                 <div class="field-group">
                     <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round">
                         <circle cx="12" cy="12" r="10"/>
@@ -577,7 +570,6 @@
                     </select>
                 </div>
 
-                <!-- КОММЕНТАРИЙ -->
                 <div class="field-group">
                     <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round">
                         <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
@@ -585,14 +577,12 @@
                     <input type="text" id="comment" placeholder="Комментарий">
                 </div>
 
-                <!-- КНОПКА -->
                 <button type="submit" class="btn-submit" id="submitBtn">
                     <span id="btnText">Отправить анкету</span>
                 </button>
             </form>
         </div>
 
-        <!-- УСПЕХ -->
         <div class="success-msg" id="successMsg">
             <div class="check-wrapper">
                 <svg viewBox="0 0 48 48">
@@ -605,14 +595,12 @@
         </div>
     </div>
 
-    <!-- ФУТЕР -->
     <p class="privacy-note">
         <span class="lock-icon">🔒</span> Отправляя анкету, вы соглашаетесь на обработку персональных данных.<br>
         Ваши данные не передаются третьим лицам и используются только для подбора вакансий.
     </p>
 
     <script>
-        // ===== ЧАСТИЦЫ =====
         const particlesContainer = document.getElementById('particles');
         for (let i = 0; i < 30; i++) {
             const particle = document.createElement('div');
@@ -626,7 +614,6 @@
             particlesContainer.appendChild(particle);
         }
 
-        // ===== СВЕЧЕНИЕ ПАНЕЛИ ПРИ ФОКУСЕ =====
         const panel = document.getElementById('panel');
         const allInputs = document.querySelectorAll('.field-group input, .field-group select');
         allInputs.forEach(el => {
@@ -634,8 +621,7 @@
             el.addEventListener('blur', () => panel.classList.remove('focused'));
         });
 
-        // ===== ОТПРАВКА ФОРМЫ =====
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxxY6ZaCHNy0yU2Vz1u2e4guJhxyY9XROq8ykN6DRDqQn93MWGfH4pqWG4hOnf1NaZI/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxCOzSr_36hAAWkuigfeueHhq0I6I9W1Gbi4yaXScx99dltR15E1S5iM10HChL0-o-yYw/exec';
         const form = document.getElementById('workForm');
         const formBlock = document.getElementById('formBlock');
         const successMsg = document.getElementById('successMsg');
@@ -645,7 +631,6 @@
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            // Проверка пустых полей
             const requiredFields = form.querySelectorAll('[required]');
             let hasEmpty = false;
             requiredFields.forEach(field => {
@@ -659,7 +644,6 @@
 
             if (hasEmpty) return;
 
-            // Отправка
             btn.disabled = true;
             btnText.innerHTML = 'Отправляется<span class="dots"></span>';
 
@@ -681,7 +665,6 @@
                     body: JSON.stringify(data)
                 });
 
-                // Плавный уход формы
                 formBlock.classList.add('form-leaving');
                 setTimeout(() => {
                     formBlock.style.display = 'none';
