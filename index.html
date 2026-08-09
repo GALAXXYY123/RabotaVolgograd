@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>РАБОТА ПОСЛЕ ЧП</title>
+    <link href="https://fonts.cdnfonts.com/css/hack" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: #050505;
+            font-family: 'Inter', -apple-system, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow: hidden;
+        }
+        .particles {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
+        }
+        .particle {
+            position: absolute;
+            background: rgba(200, 255, 100, 0.25);
+            border-radius: 50%;
+            animation: floatUp linear infinite;
+            opacity: 0;
+        }
+        @keyframes floatUp {
+            0% { opacity: 0; transform: translateY(100vh) scale(0); }
+            10% { opacity: 1; }
+            90% { opacity: 0.3; }
+            100% { opacity: 0; transform: translateY(-10vh) scale(1.5); }
+        }
+        .glass-panel {
+            position: relative; z-index: 1;
+            background: linear-gradient(160deg, rgba(30,30,30,0.6) 0%, rgba(15,15,15,0.8) 100%);
+            backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 32px; padding: 50px 35px 45px;
+            max-width: 440px; width: 100%; text-align: center;
+            box-shadow: 0 0 80px rgba(180,255,50,0.04), 0 30px 80px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.03);
+            animation: panelIn 0.9s cubic-bezier(0.16,1,0.3,1) forwards;
+            opacity: 0; transform: translateY(20px);
+            transition: box-shadow 0.6s, border-color 0.6s;
+        }
+        @keyframes panelIn { to { opacity: 1; transform: translateY(0); } }
+        .icon-box {
+            margin-bottom: 25px;
+            animation: fadeIn 0.6s 0.2s both;
+        }
+        .icon-box svg {
+            width: 60px; height: 60px;
+            filter: drop-shadow(0 0 25px rgba(200,255,100,0.4));
+        }
+        h1 {
+            color: #f0f0f0;
+            font-family: 'Hack', 'Courier New', monospace;
+            font-size: 26px; font-weight: 700; font-style: italic;
+            letter-spacing: 1.5px; margin-bottom: 8px;
+            animation: fadeIn 0.6s 0.3s both;
+        }
+        h1 .accent { color: #c8ff64; }
+        .subtitle {
+            color: rgba(200,200,200,0.45);
+            font-family: 'Inter', sans-serif;
+            font-size: 11px; font-weight: 500; font-style: italic;
+            letter-spacing: 3px; text-transform: uppercase; margin-bottom: 15px;
+            animation: fadeIn 0.6s 0.4s both;
+        }
+        .divider {
+            width: 50px; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(200,255,100,0.3), transparent);
+            margin: 0 auto 25px;
+            animation: fadeIn 0.6s 0.5s both;
+        }
+        .info-text {
+            color: rgba(200,200,200,0.4);
+            font-family: 'Inter', sans-serif;
+            font-size: 12px; font-style: italic;
+            margin-bottom: 30px; line-height: 1.6;
+            animation: fadeIn 0.6s 0.55s both;
+        }
+        .btn-anketa {
+            display: block;
+            width: 100%; padding: 18px;
+            background: rgba(200,255,100,0.04);
+            border: 1px solid rgba(200,255,100,0.25);
+            border-radius: 16px;
+            color: #c8ff64;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px; font-weight: 600; font-style: italic;
+            letter-spacing: 2px; text-transform: uppercase;
+            text-decoration: none; cursor: pointer;
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+            animation: fadeIn 0.6s 0.6s both;
+            position: relative; overflow: hidden;
+        }
+        .btn-anketa::before {
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(200,255,100,0.06), transparent);
+            transition: left 0.7s;
+        }
+        .btn-anketa:hover {
+            background: rgba(200,255,100,0.08);
+            border-color: rgba(200,255,100,0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 35px rgba(200,255,100,0.1);
+            letter-spacing: 3px;
+            color: #d9ff80;
+        }
+        .btn-anketa:hover::before { left: 100%; }
+        .btn-anketa:active { transform: scale(0.97); }
+        .privacy-note {
+            position: relative; z-index: 1; margin-top: 22px;
+            text-align: center; font-family: 'Inter', sans-serif;
+            font-size: 10px; color: rgba(180,180,180,0.2);
+            letter-spacing: 0.8px; max-width: 440px; line-height: 1.5;
+            animation: fadeIn 0.6s 0.7s both;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+
+    <div class="glass-panel">
+        <div class="icon-box">
+            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="8" y="24" width="48" height="32" rx="2" stroke="#c8ff64" stroke-width="1.8" fill="none"/>
+                <path d="M8 24L32 12L56 24" stroke="#c8ff64" stroke-width="1.8" fill="none" stroke-linejoin="round"/>
+                <line x1="32" y1="12" x2="32" y2="56" stroke="#c8ff64" stroke-width="1.2" opacity="0.4"/>
+                <line x1="8" y1="40" x2="56" y2="40" stroke="#c8ff64" stroke-width="1.2" opacity="0.4"/>
+            </svg>
+        </div>
+
+        <h1>Работа после <span class="accent">ЧП</span></h1>
+        <p class="subtitle">Склады · Официально · Своя смена</p>
+
+        <div class="divider"></div>
+
+        <p class="info-text">
+            Склад WB закрыт.<br>
+            Запускаем выходы на другие объекты своей бригадой.<br>
+            Ставки не ниже. Первые выходы — скоро.
+        </p>
+
+        <a href="https://forms.gle/7BXdQxFiX8kBE4Wg8" class="btn-anketa">
+            📋 Заполнить анкету
+        </a>
+    </div>
+
+    <p class="privacy-note">
+        🔒 Ваши данные не передаются третьим лицам и используются только для подбора вакансий.
+    </p>
+
+    <script>
+        const pc = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const p = document.createElement('div');
+            p.classList.add('particle');
+            const s = Math.random() * 3 + 1;
+            p.style.width = s + 'px';
+            p.style.height = s + 'px';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDuration = Math.random() * 12 + 8 + 's';
+            p.style.animationDelay = Math.random() * 10 + 's';
+            pc.appendChild(p);
+        }
+    </script>
+</body>
+</html>
